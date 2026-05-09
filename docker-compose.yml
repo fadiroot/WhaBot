@@ -1,0 +1,85 @@
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  # Image is configurable via .env (WAHA_IMAGE). On Apple Silicon use devlikeapro/waha:arm so
+  # Chromium runs natively; amd64 emulation often hits Puppeteer’s 30s “WS endpoint URL” timeout.
+  # On Linux/Intel amd64 hosts, omit WAHA_IMAGE or set devlikeapro/waha:latest (see .env.example).
+  waha:
+    image: ${WAHA_IMAGE:-devlikeapro/waha:latest}
+    restart: unless-stopped
+    # Chromium needs enough shared memory (default 64MB → Puppeteer WS endpoint timeouts).
+    shm_size: "2gb"
+    ports:
+      - "3000:3000"
+    environment:
+      - WHATSAPP_HOOK_URL=http://backend:8000/api/v1/webhooks/waha
+      - WHATSAPP_HOOK_EVENTS=message,message.any
+      # If you set WAHA_WEBHOOK_SECRET in backend, also configure here:
+      # - WHATSAPP_HOOK_HMAC_KEY=${WAHA_WEBHOOK_SECRET}
+      - WAHA_API_KEY=${WAHA_API_KEY:-}
+      - WAHA_LOG_LEVEL=info
+      - WAHA_DASHBOARD_USERNAME=${WAHA_DASHBOARD_USERNAME:-admin}
+      - WAHA_DASHBOARD_PASSWORD=${WAHA_DASHBOARD_PASSWORD:-choose-a-strong-password}
+    volumes:
+      - waha-data:/app/.sessions
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    # Reach Ollama on the host from inside the container (Mac/Win Docker Desktop).
+    # On Linux Docker, this maps host-gateway so http://host.docker.internal:11434 works.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    env_file:
+      - .env
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_DB=ai_wa_engineer
+      - REDIS_URL=redis://redis:6379/0
+      - WAHA_BASE_URL=http://waha:3000
+      - WORKSPACE_ROOT=/workspaces
+      - CORS_ORIGINS=["http://localhost", "http://localhost:5173", "http://localhost:8080"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - workspaces:/workspaces
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "8088:80"
+
+volumes:
+  mongo-data:
+  redis-data:
+  waha-data:
+  workspaces:

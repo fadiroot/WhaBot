@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: #0b0f17;
+  color: #f8fafc;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.light body {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+html.light .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; }
+
+.btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors; }
+.btn-primary { @apply btn bg-wa-500 text-black hover:bg-wa-600 hover:text-white; }
+.btn-ghost { @apply btn bg-ink-700 text-slate-100 hover:bg-ink-600 border border-transparent; }
+.btn-danger { @apply btn bg-red-500/90 text-white hover:bg-red-500; }
+html.light .btn-ghost { background: #e2e8f0; color: #0f172a; border-color: #cbd5e1; }
+html.light .btn-ghost:hover { background: #cbd5e1; }
+
+.input { @apply w-full rounded-lg border border-ink-700 bg-ink-800 px-3 py-2 text-sm placeholder-slate-500 focus:border-wa-500 focus:outline-none; }
+.label { @apply mb-1 block text-xs font-medium uppercase tracking-wider text-slate-400; }
+.card { @apply rounded-xl border border-ink-700 bg-ink-800/60 backdrop-blur-sm; }
+.badge { @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium; }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  border-radius: 10px;
+  border: 1px solid #374151;
+  background: #111827;
+}
+
+.theme-toggle button {
+  border: 0;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 7px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.theme-toggle button.is-active {
+  color: #0f172a;
+  background: #25d366;
+}
+
+html.light .theme-toggle {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+html.light .theme-toggle button {
+  color: #475569;
+}
+
+html.light .theme-toggle button.is-active {
+  color: #ffffff;
+  background: #0f172a;
+}
+
+html.light .app-shell { background: #f8fafc; }
+html.light .app-sidebar { background: #ffffff !important; }
+html.light .app-sidebar-footer { background: #ffffff; }
+html.light .input { background: #ffffff; border-color: #cbd5e1; color: #0f172a; }
+html.light .label { color: #475569; }
+html.light .card { background: #ffffff; border-color: #d1d5db; }
+
+html.light .text-slate-500 { color: #64748b !important; }
+html.light .text-slate-400 { color: #475569 !important; }
+html.light .text-slate-300 { color: #334155 !important; }
+html.light .text-slate-100 { color: #0f172a !important; }
+html.light .bg-ink-800\/40 { background-color: rgba(255, 255, 255, 0.8) !important; }
+html.light .bg-ink-800\/60 { background-color: rgba(255, 255, 255, 0.95) !important; }
+html.light .bg-ink-800 { background-color: #ffffff !important; }
+html.light .bg-ink-700 { background-color: #e2e8f0 !important; }
+html.light .border-ink-700 { border-color: #d1d5db !important; }
+html.light .hover\:bg-ink-700\/40:hover { background-color: rgba(226, 232, 240, 0.8) !important; }
+html.light .hover\:bg-ink-700\/60:hover { background-color: rgba(226, 232, 240, 0.9) !important; }
+
+.status-badge {
+  border: 1px solid transparent;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+}
+
+.status-pending { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; border-color: rgba(100, 116, 139, 0.45); }
+.status-planning { background: rgba(59, 130, 246, 0.2); color: #bfdbfe; border-color: rgba(59, 130, 246, 0.45); }
+.status-executing { background: rgba(245, 158, 11, 0.2); color: #fde68a; border-color: rgba(245, 158, 11, 0.5); }
+.status-awaiting_approval { background: rgba(147, 51, 234, 0.2); color: #ddd6fe; border-color: rgba(147, 51, 234, 0.45); }
+.status-succeeded, .status-approved { background: rgba(16, 185, 129, 0.2); color: #a7f3d0; border-color: rgba(16, 185, 129, 0.5); }
+.status-failed, .status-rejected { background: rgba(239, 68, 68, 0.2); color: #fecaca; border-color: rgba(239, 68, 68, 0.5); }
+.status-cancelled, .status-expired { background: rgba(100, 116, 139, 0.2); color: #cbd5e1; border-color: rgba(100, 116, 139, 0.45); }
+
+html.light .status-pending { background: #e2e8f0; color: #334155; border-color: #cbd5e1; }
+html.light .status-planning { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+html.light .status-executing { background: #fef3c7; color: #b45309; border-color: #fcd34d; }
+html.light .status-awaiting_approval { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+html.light .status-succeeded, html.light .status-approved { background: #dcfce7; color: #166534; border-color: #86efac; }
+html.light .status-failed, html.light .status-rejected { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+html.light .status-cancelled, html.light .status-expired { background: #e2e8f0; color: #475569; border-color: #cbd5e1; }

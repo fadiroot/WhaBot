@@ -1,0 +1,12 @@
+{
+  "event": "message",
+  "session": "default",
+  "payload": {
+    "id": "false_15551234567@c.us_3EB0",
+    "from": "15551234567@c.us",
+    "fromMe": false,
+    "body": "project: demo summarize PR #1",
+    "hasMedia": false,
+    "timestamp": 1731000000
+  }
+}
