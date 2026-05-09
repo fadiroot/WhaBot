@@ -1,0 +1,30 @@
+!.env.example
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.log
+.idea/
+.vscode/
+.DS_Store
+
+# frontend
+node_modules/
+dist/
+.vite/
+
+# workspaces (cloned repos for the AI sandbox)
+.workspaces/
+/tmp/ai-wa-workspaces/
+temp_auto_push.bat
+temp_interactive_push.bat
+branch_structure.json
+config.bat
